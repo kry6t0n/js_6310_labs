@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+*.test.js
+*.spec.js
+__tests__/
+jest.config.mjs
+start.js
