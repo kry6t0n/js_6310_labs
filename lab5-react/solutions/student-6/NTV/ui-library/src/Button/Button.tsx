@@ -1,12 +1,12 @@
-import React from 'react';
-import './Button.module.css';
+import React from 'react'
+import './Button.module.css'
 
 interface ButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  variant?: 'primary' | 'secondary' | 'text';
-  disabled?: boolean;
-  className?: string;
+  children: React.ReactNode
+  onClick?: () => void
+  variant?: 'primary' | 'secondary' | 'text'
+  disabled?: boolean
+  className?: string
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -24,7 +24,7 @@ const Button: React.FC<ButtonProps> = ({
     >
       {children}
     </button>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button

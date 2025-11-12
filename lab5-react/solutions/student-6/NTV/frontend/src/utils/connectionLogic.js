@@ -65,7 +65,7 @@ export const getConnectionStyle = (connectionType = 'physical', status = 'active
  * Преобразует IP адрес и маску в сетевой адрес
  * @param {string} ip - IP адрес (например, 192.168.1.100)
  * @param {string} mask - Маска сети (например, 255.255.255.0)
- * @returns {string} - Сетевой адрес (например, 192.168.1.0)
+ * @returns {string|null} - Сетевой адрес (например, 192.168.1.0) или null при ошибке
  */
 export const getNetworkAddress = (ip, mask) => {
   if (!ip || !mask) return null;
@@ -73,6 +73,20 @@ export const getNetworkAddress = (ip, mask) => {
   try {
     const ipParts = ip.split('.').map(Number);
     const maskParts = mask.split('.').map(Number);
+    
+    // Проверяем, что оба массива содержат 4 элемента
+    if (ipParts.length !== 4 || maskParts.length !== 4) {
+      return null;
+    }
+    
+    // Проверяем, что все части являются валидными числами (не NaN) и в диапазоне 0-255
+    for (let i = 0; i < 4; i++) {
+      if (isNaN(ipParts[i]) || isNaN(maskParts[i]) || 
+          ipParts[i] < 0 || ipParts[i] > 255 || 
+          maskParts[i] < 0 || maskParts[i] > 255) {
+        return null;
+      }
+    }
     
     const network = ipParts.map((part, i) => part & maskParts[i]);
     return network.join('.');

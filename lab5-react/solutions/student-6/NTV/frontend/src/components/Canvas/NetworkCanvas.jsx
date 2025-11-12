@@ -13,7 +13,6 @@ import 'reactflow/dist/style.css';
 import CustomNode from './CustomNodes/CustomNode';
 import Toolbar from './Toolbar';
 import { 
-  CONNECTION_TYPES,
   canConnectNodes,
   getSuggestedConnectionType,
   getConnectionStyle

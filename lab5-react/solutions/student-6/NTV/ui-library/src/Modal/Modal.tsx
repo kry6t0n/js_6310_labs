@@ -1,15 +1,15 @@
-import React from 'react';
-import './Modal.css';
+import React from 'react'
+import './Modal.css'
 
 interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title?: string;
-  children: React.ReactNode;
+  isOpen: boolean
+  onClose: () => void
+  title?: string
+  children: React.ReactNode
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -25,7 +25,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         <div className="modal-body">{children}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
     
     if (user) {
       // Не храним пароль в состоянии
-      const { password: _, ...userWithoutPassword } = user;
+      const { password, ...userWithoutPassword } = user;
       setUser(userWithoutPassword);
       setIsAuthenticated(true);
       localStorage.setItem('user', JSON.stringify(userWithoutPassword));

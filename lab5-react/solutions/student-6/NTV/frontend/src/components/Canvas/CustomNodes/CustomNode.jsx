@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Handle, Position } from 'reactflow';
 
 const CustomNode = memo(({ data }) => {
-  const getNodeStyle = (type) => {
+  const getNodeStyle = () => {
     const styles = {
       router: { background: '#e3f2fd', border: '2px solid #2196f3' },
       switch: { background: '#f3e5f5', border: '2px solid #9c27b0' },
@@ -25,7 +25,7 @@ const CustomNode = memo(({ data }) => {
   };
 
   return (
-    <div className="custom-node" style={getNodeStyle(data.type)}>
+    <div className="custom-node" style={getNodeStyle()}>
       <Handle type="target" position={Position.Top} />
       
       <div className="node-header">

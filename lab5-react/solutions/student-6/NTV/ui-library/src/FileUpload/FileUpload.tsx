@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
-import './FileUpload.css';
+import React, { useRef } from 'react'
+import './FileUpload.css'
 
 interface FileUploadProps {
-  onFileSelect: (file: File) => void;
-  accept?: string;
-  label?: string;
-  disabled?: boolean;
+  onFileSelect: (file: File) => void
+  accept?: string
+  label?: string
+  disabled?: boolean
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({
@@ -14,14 +14,14 @@ const FileUpload: React.FC<FileUploadProps> = ({
   label = 'Upload File',
   disabled = false,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files?.[0]
     if (file) {
-      onFileSelect(file);
+      onFileSelect(file)
     }
-  };
+  }
 
   return (
     <div className="file-upload-container">
@@ -42,7 +42,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         {label}
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default FileUpload;
+export default FileUpload
