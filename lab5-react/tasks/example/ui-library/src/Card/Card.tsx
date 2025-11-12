@@ -1,5 +1,5 @@
-import React from 'react';
-import './Card.css';
+import React from 'react'
+import './Card.css'
 
 export interface CardProps {
   title?: string;
@@ -13,5 +13,5 @@ export const Card: React.FC<CardProps> = ({ title, children, className = '' }) =
       {title && <h3 className="card__title">{title}</h3>}
       <div className="card__content">{children}</div>
     </div>
-  );
-};
+  )
+}

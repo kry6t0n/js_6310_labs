@@ -3,7 +3,7 @@ const config = {
   testEnvironment: 'jsdom',
   // Configure ts-jest to transpile TypeScript files
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(js|jsx|ts|tsx)$': ['ts-jest', {tsconfig: 'tsconfig.app.json'}],
   },
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
