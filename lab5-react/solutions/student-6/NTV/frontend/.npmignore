@@ -1,0 +1,17 @@
+# Frontend .npmignore
+node_modules
+dist
+.env
+.env.local
+.env.*.local
+npm-debug.log
+yarn-error.log
+.DS_Store
+*.sw?
+*.swp
+.idea
+.vscode
+coverage
+.gitignore
+tsconfig.node.json
+vite.config.js.timestamp-*

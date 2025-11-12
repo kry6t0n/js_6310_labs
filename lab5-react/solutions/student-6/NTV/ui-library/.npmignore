@@ -1,0 +1,17 @@
+# UI Library .npmignore
+node_modules
+src
+.env
+.env.local
+.env.*.local
+npm-debug.log
+yarn-error.log
+.DS_Store
+*.sw?
+*.swp
+.idea
+.vscode
+coverage
+.gitignore
+tsconfig.node.json
+vite.config.ts.timestamp-*

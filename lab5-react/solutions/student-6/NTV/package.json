@@ -1,0 +1,19 @@
+{
+  "name": "network-topology-visualizer",
+  "version": "1.0.0",
+  "description": "Monorepo for Network Topology Visualizer",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "ui-library"
+  ],
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix ui-library run build && npm --prefix frontend run build",
+    "build:ui": "npm --prefix ui-library run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "install:all": "npm install && npm --prefix frontend install && npm --prefix ui-library install"
+  },
+  "devDependencies": {}
+}
