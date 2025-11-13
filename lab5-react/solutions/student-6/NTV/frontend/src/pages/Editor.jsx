@@ -26,7 +26,7 @@ const Editor = () => {
   }, []);
   
   // Функция для передачи сохранения из NetworkCanvas
-  const handleSaveProject = () => {
+  const handleSaveProject = (nodes, edges) => {
     setShowSaveDialog(true);
   };
 
@@ -124,7 +124,7 @@ const Editor = () => {
         setSaveStatus('');
         setSaveError('');
       }, 2000);
-    } catch (_) {
+    } catch (error) {
       setSaveStatus('error');
       setSaveError('Failed to save project');
     }

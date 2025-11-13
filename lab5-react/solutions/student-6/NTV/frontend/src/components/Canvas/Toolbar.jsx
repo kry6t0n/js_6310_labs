@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { exportToJson, importFromJson } from '../../utils/exportUtils';
-import { CONNECTION_TYPES, getConnectionStyle } from '../../utils/connectionLogic';
+import { CONNECTION_TYPES, CONNECTION_STYLES, getConnectionStyle, getEdgeInfo } from '../../utils/connectionLogic';
 
 const Toolbar = ({ onAddNode, selectedNode, selectedEdge, nodes, edges, onSetNodes, onSetEdges }) => {
   const fileInputRef = useRef(null);
