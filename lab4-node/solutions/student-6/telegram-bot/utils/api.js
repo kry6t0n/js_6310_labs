@@ -17,6 +17,7 @@ export async function getFromAPI(endpoint) {
 
 // Функция для экранирования Markdown символов
 export function escapeMarkdown(text) {
+  return text;
   if (typeof text !== 'string') return text;
   return text.replace(/([_*[\]()~`>#+\-=|{}.!])/g, '\\$1');
 }
