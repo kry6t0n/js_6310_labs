@@ -1,96 +1,116 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/Layout/Header';
-import '../styles/Admin.css';
+import React, { useState, useEffect, FC } from 'react'
 
-const Admin = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [stats, setStats] = useState({
+import { useNavigate } from 'react-router-dom'
+
+import Header from '../components/Layout/Header'
+import { useAuth } from '../contexts/AuthContext'
+import '../styles/Admin.css'
+
+interface Stats {
+  totalUsers: number
+  totalProjects: number
+  totalNodes: number
+}
+
+interface ProjectItem {
+  id: string
+  name: string
+  userId: string
+  ownerName: string
+  nodes?: unknown[]
+  edges?: unknown[]
+  createdAt: string
+}
+
+const Admin: FC = () => {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  const [stats, setStats] = useState<Stats>({
     totalUsers: 3,
     totalProjects: 0,
     totalNodes: 0
-  });
-  const [allProjects, setAllProjects] = useState([]);
-  const [activeTab, setActiveTab] = useState('overview');
+  })
+  const [allProjects, setAllProjects] = useState<ProjectItem[]>([])
+  const [activeTab, setActiveTab] = useState('overview')
 
   useEffect(() => {
     // Проверяем, является ли пользователь админом
     if (user?.role !== 'Administrator') {
-      navigate('/');
-      return;
+      navigate('/')
+
+      return
     }
 
-    loadAdminData();
-  }, [user, navigate]);
+    loadAdminData()
+  }, [user, navigate])
 
-  const loadAdminData = () => {
+  const loadAdminData = (): void => {
     try {
       // Получаем все проекты из localStorage
-      const storageData = JSON.parse(localStorage.getItem('network_projects') || '{}');
-      const projects = [];
-      let totalProjects = 0;
-      let totalNodes = 0;
+      const storageData = JSON.parse(localStorage.getItem('network_projects') || '{}')
+      const projects: ProjectItem[] = []
+      let totalProjects = 0
+      let totalNodes = 0
 
       Object.entries(storageData).forEach(([userId, userProjects]) => {
-        userProjects.forEach(project => {
+        (userProjects as ProjectItem[]).forEach(project => {
           projects.push({
             ...project,
             userId,
-            ownerName: `User ${userId.substring(0, 4)}`
-          });
-          totalProjects++;
-          totalNodes += project.nodes?.length || 0;
-        });
-      });
+            ownerName: `User ${(userId as string).substring(0, 4)}`
+          })
+          totalProjects++
+          totalNodes += (project.nodes?.length || 0) as number
+        })
+      })
 
-      setAllProjects(projects);
+      setAllProjects(projects)
       setStats({
         totalUsers: 3, // Фиксированное количество
         totalProjects,
         totalNodes
-      });
+      })
     } catch (error) {
-      console.error('Error loading admin data:', error);
+      console.error('Error loading admin data:', error)
     }
-  };
+  }
 
-  const handleDeleteProject = (projectId, userId) => {
+  const handleDeleteProject = (projectId: string, userId: string): void => {
     try {
-      const storageData = JSON.parse(localStorage.getItem('network_projects') || '{}');
+      const storageData = JSON.parse(localStorage.getItem('network_projects') || '{}')
+
       if (storageData[userId]) {
-        storageData[userId] = storageData[userId].filter(p => p.id !== projectId);
-        localStorage.setItem('network_projects', JSON.stringify(storageData));
-        loadAdminData();
+        storageData[userId] = (storageData[userId] as ProjectItem[]).filter(p => p.id !== projectId)
+        localStorage.setItem('network_projects', JSON.stringify(storageData))
+        loadAdminData()
       }
     } catch (error) {
-      console.error('Error deleting project:', error);
+      console.error('Error deleting project:', error)
     }
-  };
+  }
 
-  const handleClearAllData = () => {
+  const handleClearAllData = (): void => {
     if (window.confirm('Are you sure? This will delete ALL projects!')) {
-      localStorage.removeItem('network_projects');
-      loadAdminData();
+      localStorage.removeItem('network_projects')
+      loadAdminData()
     }
-  };
+  }
 
   return (
     <div className="admin-page">
       <Header />
-      
+
       <div className="admin-container">
         <div className="admin-header">
           <div className="header-content">
             <h1>📊 Admin Dashboard</h1>
             <p>Manage users and projects</p>
           </div>
-          <button 
+          <button
             className="btn-logout"
             onClick={() => {
-              logout();
-              navigate('/login');
+              logout()
+              navigate('/login')
             }}
           >
             Logout
@@ -172,7 +192,7 @@ const Admin = () => {
                     <div className="item-info">
                       <h4>{project.name}</h4>
                       <p className="item-meta">
-                        Owner: {project.ownerName} | 
+                        Owner: {project.ownerName} |
                         Created: {new Date(project.createdAt).toLocaleDateString('ru-RU')} |
                         Nodes: {project.nodes?.length || 0}
                       </p>
@@ -237,7 +257,7 @@ const Admin = () => {
           <div className="tab-content">
             <div className="settings-section">
               <h2>System Settings</h2>
-              
+
               <div className="settings-group">
                 <h3>⚠️ Danger Zone</h3>
                 <div className="danger-actions">
@@ -279,7 +299,7 @@ const Admin = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Admin;
+export default Admin

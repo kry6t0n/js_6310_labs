@@ -1,13 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import Header from '../components/Layout/Header';
-import '../styles/Dashboard.css';
+import React, { FC } from 'react'
 
-const Dashboard = () => {
-  const { user } = useAuth();
+import { Link } from 'react-router-dom'
 
-  const quickActions = [
+import Header from '../components/Layout/Header'
+import { useAuth } from '../contexts/AuthContext'
+import '../styles/Dashboard.css'
+
+interface QuickAction {
+  icon: string
+  title: string
+  description: string
+  link: string
+  badge: string | null
+  color: string
+}
+
+const Dashboard: FC = () => {
+  const { user } = useAuth()
+
+  const quickActions: QuickAction[] = [
     {
       icon: '🛠️',
       title: 'Create New Topology',
@@ -40,12 +51,19 @@ const Dashboard = () => {
       badge: 'Coming Soon',
       color: 'muted'
     }
-  ];
+  ]
+
+  const handleComingSoon = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    if ((e.currentTarget as HTMLAnchorElement).getAttribute('href') === '#') {
+      e.preventDefault()
+      alert('This feature is coming soon!')
+    }
+  }
 
   return (
     <div className="dashboard">
       <Header />
-      
+
       <div className="dashboard-content container">
         <div className="welcome-section">
           <h1>Welcome back, {user?.username}! 👋</h1>
@@ -54,16 +72,11 @@ const Dashboard = () => {
 
         <div className="actions-grid">
           {quickActions.map((action, index) => (
-            <Link 
+            <Link
               key={index}
-              to={action.link} 
+              to={action.link}
               className="action-card"
-              onClick={e => {
-                if (action.link === '#') {
-                  e.preventDefault();
-                  alert('This feature is coming soon!');
-                }
-              }}
+              onClick={handleComingSoon}
             >
               <div className="card-icon">{action.icon}</div>
               <h3>{action.title}</h3>
@@ -84,7 +97,7 @@ const Dashboard = () => {
               <div className="empty-icon">📋</div>
               <p>No recent projects found</p>
               <Link to="/editor" className="create-link">
-                Create your first network topology 
+                Create your first network topology
                 <span>→</span>
               </Link>
             </div>
@@ -92,7 +105,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

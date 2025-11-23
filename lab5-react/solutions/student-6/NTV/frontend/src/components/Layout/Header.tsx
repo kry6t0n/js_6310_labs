@@ -1,21 +1,23 @@
-import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import '../../styles/Header.css';
+import React, { FC } from 'react'
 
-const Header = () => {
-  const { user, logout } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+import { useAuth } from '../../contexts/AuthContext'
+import '../../styles/Header.css'
 
-  const getInitials = (username) => {
-    return username ? username.charAt(0).toUpperCase() : 'U';
-  };
+const Header: FC = () => {
+  const { user, logout } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleLogout = (): void => {
+    logout()
+    navigate('/login')
+  }
+
+  const getInitials = (username?: string): string => {
+    return username ? username.charAt(0).toUpperCase() : 'U'
+  }
 
   return (
     <header className="header">
@@ -26,29 +28,29 @@ const Header = () => {
             Network Visualizer
           </Link>
         </div>
-        
+
         <nav className="nav">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}
           >
             Dashboard
           </Link>
-          <Link 
-            to="/editor" 
+          <Link
+            to="/editor"
             className={location.pathname === '/editor' ? 'nav-link active' : 'nav-link'}
           >
             Editor
           </Link>
-          <Link 
-            to="/account" 
+          <Link
+            to="/account"
             className={location.pathname === '/account' ? 'nav-link active' : 'nav-link'}
           >
             Account
           </Link>
           {user?.role === 'Administrator' && (
-            <Link 
-              to="/admin" 
+            <Link
+              to="/admin"
               className={location.pathname === '/admin' ? 'nav-link active' : 'nav-link'}
               style={{ color: '#ef4444' }}
             >
@@ -73,7 +75,7 @@ const Header = () => {
         </div>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

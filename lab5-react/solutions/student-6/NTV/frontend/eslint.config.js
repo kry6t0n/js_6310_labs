@@ -1,72 +1,94 @@
 import js from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import reactPlugin from 'eslint-plugin-react'
-import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import typescriptEslint from '@typescript-eslint/eslint-plugin'
+import { defineConfig, globalIgnores } from 'eslint/config'
 import importPlugin from 'eslint-plugin-import'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
-export default [
-  {
-    ignores: ['node_modules/', 'dist/', 'coverage/', '**/*.d.ts'],
-  },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
+export default defineConfig([
+  globalIgnores(['dist']),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs['recommended-latest'],
+      reactRefresh.configs.vite,
+    ],
     languageOptions: {
-      globals: {
-        console: 'readonly',
-        window: 'readonly',
-        document: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        Blob: 'readonly',
-        URL: 'readonly',
-        FileReader: 'readonly',
-        alert: 'readonly',
-        CustomEvent: 'readonly',
-        setTimeout: 'readonly',
-      },
+      ecmaVersion: 2020,
+      globals: globals.browser,
     },
-  },
-  {
-    files: ['**/*.{ts,tsx}'],
     plugins: {
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      import: importPlugin,
+      '@typescript-eslint': typescriptEslint,
+      'react': react,
+      'import': importPlugin
     },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
+  }, {
     rules: {
-      indent: ['error', 2],
-      quotes: ['error', 'single', { allowTemplateLiterals: true }],
-      semi: ['error', 'never'],
-      'no-trailing-spaces': 'error',
-      'eol-last': ['error', 'always'],
-      'no-multiple-empty-lines': ['error', { max: 1 }],
-      'comma-spacing': 'error',
-      'space-before-blocks': 'error',
-      'object-curly-spacing': ['error', 'always'],
-      'array-bracket-spacing': ['error', 'never'],
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'error',
-      'import/order': [
-        'error',
-        {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
+      "indent": ["error", 2],
+      'semi': ['error', 'never'],// Правильный порядок импортов
+      'import/order': ['error', {
+        'groups': [
+          'builtin',    // Встроенные модули (path, fs и т.д.)
+          'external',   // Внешние зависимости (react, lodash и т.д.)
+          'internal',   // Внутренние модули (алиасы и т.д.)
+          ['parent', 'sibling'], // Родительские и соседние директории
+          'index',      // index файлы
+          'object',     // Object imports
+          'type'        // Type imports
+        ],
+        'pathGroups': [
+          {
+            pattern: 'react',
+            group: 'external',
+            position: 'before'
           },
-        },
+          {
+            pattern: '@/**',
+            group: 'internal'
+          }
+        ],
+        'pathGroupsExcludedImportTypes': ['react'],
+        'newlines-between': 'always',
+        'alphabetize': {
+          order: 'asc',
+          caseInsensitive: true
+        }
+      }],      
+      // Запрет лишних переносов
+      'no-multiple-empty-lines': ['error', {
+        max: 1,        // максимум 1 пустая строка подряд
+        maxEOF: 0,     // не допускать пустых строк в конце файла
+        maxBOF: 0      // не допускать пустых строк в начале файла
+      }],
+      'padded-blocks': ['error', 'never'], // запрет пустых строк в начале/конце блоков
+      'lines-between-class-members': ['error', 'always', {
+        exceptAfterSingleLine: true // разрешить без пустой строки после однострочных членов класса
+      }],
+      'padding-line-between-statements': [
+        'error',
+        // Пустая строка перед return
+        { blankLine: 'always', prev: '*', next: 'return' },
+        // Пустая строка перед блоками
+        { blankLine: 'always', prev: '*', next: ['block', 'block-like'] },
+        // Пустая строка между объявлениями переменных и следующим кодом
+        { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+        { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
+        // Пустая строка между импортами и следующим кодом
+        { blankLine: 'always', prev: 'import', next: '*' },
+        { blankLine: 'any', prev: 'import', next: 'import' },
+        // Пустая строка между экспортами и следующим кодом
+        { blankLine: 'always', prev: 'export', next: '*' },
+        { blankLine: 'any', prev: 'export', next: 'export' },
+        // Пустая строка между функциями
+        { blankLine: 'always', prev: 'function', next: 'function' },
+        // Пустая строка между классами
+        { blankLine: 'always', prev: 'class', next: 'class' }
       ],
     },
   },
-]
+])

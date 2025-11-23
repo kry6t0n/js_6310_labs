@@ -1,10 +1,12 @@
-import { render, screen } from '@testing-library/react'
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
+
+import { render, screen } from '@testing-library/react'
+
 import App from './App'
 
 // Mock AuthContext
 const mockUseAuth = jest.fn()
+
 jest.mock('./contexts/AuthContext', () => ({
   __esModule: true,
   AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -25,11 +27,13 @@ const getTestRoute = () => (global as any).__TEST_ROUTE || '/'
 jest.mock('react-router-dom', () => {
   const actual = jest.requireActual('react-router-dom')
   const React = require('react')
+
   return {
     ...actual,
     BrowserRouter: ({ children }: { children: React.ReactNode }) => {
       // Call getter function to get current route
       const route = getTestRoute()
+
       return React.createElement(actual.MemoryRouter, { initialEntries: [route] }, children)
     },
   }
@@ -38,6 +42,7 @@ jest.mock('react-router-dom', () => {
 // Helper to render App
 const renderApp = (route: string = '/') => {
   ;(global as any).__TEST_ROUTE = route
+
   return render(<App />)
 }
 
@@ -53,7 +58,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'User' },
       })
-      
+
       renderApp()
       expect(screen.getByText('Dashboard Page')).toBeInTheDocument()
     })
@@ -63,7 +68,7 @@ describe('App Component', () => {
         isAuthenticated: false,
         user: null,
       })
-      
+
       renderApp()
       expect(screen.getByText('Login Page')).toBeInTheDocument()
     })
@@ -73,7 +78,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'User' },
       })
-      
+
       renderApp('/editor')
       expect(screen.getByText('Editor Page')).toBeInTheDocument()
     })
@@ -83,7 +88,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'User' },
       })
-      
+
       renderApp('/account')
       expect(screen.getByText('Account Page')).toBeInTheDocument()
     })
@@ -95,7 +100,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'Administrator' },
       })
-      
+
       renderApp('/admin')
       expect(screen.getByText('Admin Page')).toBeInTheDocument()
     })
@@ -105,7 +110,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'User' },
       })
-      
+
       renderApp('/admin')
       expect(screen.getByText('Dashboard Page')).toBeInTheDocument()
     })
@@ -115,7 +120,7 @@ describe('App Component', () => {
         isAuthenticated: false,
         user: null,
       })
-      
+
       renderApp('/admin')
       expect(screen.getByText('Login Page')).toBeInTheDocument()
     })
@@ -127,7 +132,7 @@ describe('App Component', () => {
         isAuthenticated: false,
         user: null,
       })
-      
+
       renderApp('/login')
       expect(screen.getByText('Login Page')).toBeInTheDocument()
     })
@@ -137,7 +142,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'User' },
       })
-      
+
       renderApp('/login')
       expect(screen.getByText('Dashboard Page')).toBeInTheDocument()
     })
@@ -149,7 +154,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'User' },
       })
-      
+
       renderApp('/')
       expect(screen.getByText('Dashboard Page')).toBeInTheDocument()
     })
@@ -159,7 +164,7 @@ describe('App Component', () => {
         isAuthenticated: true,
         user: { role: 'User' },
       })
-      
+
       renderApp('/unknown-route')
       expect(screen.getByText('Dashboard Page')).toBeInTheDocument()
     })

@@ -11,6 +11,7 @@ describe('validateTopologyData', () => {
 
   test('returns invalid for bad node/edge structure', () => {
     const bad = { nodes: [{ id: '1' }], edges: [{ id: 'e' }] }
+
     expect(validateTopologyData(bad).isValid).toBe(false)
   })
 
@@ -19,6 +20,7 @@ describe('validateTopologyData', () => {
       nodes: [{ id: '1', position: { x: 0, y: 0 }, data: {} }],
       edges: [{ id: 'e1', source: '1', target: '1' }]
     }
+
     expect(validateTopologyData(good).isValid).toBe(true)
   })
 })

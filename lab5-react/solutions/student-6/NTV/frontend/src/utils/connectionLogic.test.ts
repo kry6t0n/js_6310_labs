@@ -12,6 +12,7 @@ import {
 describe('connectionLogic utilities', () => {
   test('getConnectionStyle returns merged style for known type/status', () => {
     const s = getConnectionStyle('routing', 'error')
+
     expect(s).toHaveProperty('stroke')
     expect(s).toHaveProperty('opacity')
     expect(s.strokeDasharray).toBeDefined()
@@ -52,6 +53,7 @@ describe('connectionLogic utilities', () => {
     ]
 
     const result = validateConnections(nodes, edges)
+
     expect(result.valid).toBe(false)
     expect(result.errors.length).toBeGreaterThanOrEqual(1)
   })
@@ -60,10 +62,12 @@ describe('connectionLogic utilities', () => {
     const source = { id: 's', data: { type: 'server', label: 'S' } }
     const target = { id: 't', data: { type: 'workstation', label: 'T' } }
     const suggested = getSuggestedConnectionType(source, target)
+
     expect(typeof suggested).toBe('string')
 
     const edge = { id: 'e', source: 's', target: 't', connectionType: null, data: {} }
     const info = getEdgeInfo(edge, [source, target])
+
     expect(info).toHaveProperty('source')
     expect(info).toHaveProperty('target')
     expect(info.type).toBeDefined()
